@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PerfMonG", "PerfMonG.csproj", "{C8FAEBFA-B172-40A0-9D03-F61C6F7AAF7A}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{C8FAEBFA-B172-40A0-9D03-F61C6F7AAF7A}.Debug.ActiveCfg = Debug|.NET
+		{C8FAEBFA-B172-40A0-9D03-F61C6F7AAF7A}.Debug.Build.0 = Debug|.NET
+		{C8FAEBFA-B172-40A0-9D03-F61C6F7AAF7A}.Release.ActiveCfg = Release|.NET
+		{C8FAEBFA-B172-40A0-9D03-F61C6F7AAF7A}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
