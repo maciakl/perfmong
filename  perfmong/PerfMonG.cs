@@ -1,3 +1,8 @@
+/*
+	PerfMonG (c) Lukasz Grzegorz Maciak
+	contributions from mike@teamsandbox.com  
+*/
+
 using System;
 using System.IO;
 using System.Drawing;
@@ -8,8 +13,8 @@ using System.Data;
 
 namespace PerfMonG
 {
-	
-	public class PerfMonG : System.Windows.Forms.Form
+	//all we got to do to make it draggable is inherit from FormBase class in DraggableForm.cs file
+	public class PerfMonG : DraggableBase
 	{
 		private System.Windows.Forms.Label CPUText;
 		private System.Windows.Forms.Label CPU;
@@ -39,6 +44,8 @@ namespace PerfMonG
 
 		private Config configuration;
 
+		public const string VERSION = "0.2.3";
+		public const string VERSION_MSG = "PerfMon " + VERSION + " (c) 2004 Lukasz Grzegorz Maciak";
 
 		// EDITABLE SYSTEM VARIABLES:
 		private int xPosition;
@@ -49,7 +56,7 @@ namespace PerfMonG
 		
 		
 
-		private const string information = "PerfMon 0.2.1 (c) 2004 Lukasz Grzegorz Maciak";
+		private const string information = VERSION_MSG;
 
         
 		public PerfMonG()
@@ -311,7 +318,6 @@ namespace PerfMonG
 			this.Name = "PerfMonG";
 			this.Text = "Form1";
 			this.ResumeLayout(false);
-
 		}
 
 
@@ -321,11 +327,25 @@ namespace PerfMonG
 		[STAThread]
 		static void Main() 
 		{
-			Application.Run(new PerfMonG());
+			try
+			{
+				Application.Run(new PerfMonG());
+			}
+			catch(Exception e)
+			{
+				MessageBox.Show(e.StackTrace, "Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+			}
 		}
 
 		private void Close(object sender, EventArgs e)
 		{
+			if(MessageBox.Show(this, "Save settings?", "Exiting PerfMonG", MessageBoxButtons.YesNo,MessageBoxIcon.Question) == DialogResult.Yes)
+			{
+				resetLocation();
+				configuration.writeConfig();
+			}
+ 
+
 			this.Close();
 			this.Dispose();
 		}
@@ -336,8 +356,23 @@ namespace PerfMonG
 
 		}
 
+		private void resetLocation()
+		{
+			//mike@teamsandbox.com :
+			//lets drop props because we want to re-set the position of the form 
+			//and have it show up in the text box which depends (on creation) of the config file
+			props.Dispose(); 
+			//change the config in memory
+			configuration.X = this.Location.X; 
+			configuration.Y = this.Location.Y;
+			//re-create props
+			props = new PropertiesDialog(configuration); 
+		}
+
 		private void PropertiesWindow(object sender, EventArgs e)
 		{
+			resetLocation();
+	 
 			if(props.ShowDialog(this)== DialogResult.OK)
 			{
 				xPosition = props.Xp;
@@ -348,5 +383,6 @@ namespace PerfMonG
 				Configure();
 			}
 		}
+
 	}
 }

@@ -69,7 +69,7 @@ namespace PerfMonG
 			if(sr == null)
 			{
 				setDefaults();
-				Directory.CreateDirectory(path);
+				Directory.CreateDirectory(path + "\\PerfMonG");
 				writeConfig(X, Y, OPC, BG, TXT);
 				
 			}
@@ -185,6 +185,11 @@ namespace PerfMonG
 
 			wr.Close();
 
+		}
+
+		public void writeConfig()
+		{
+			writeConfig(x, y, opc, bg, txt); 
 		}
 
 		// properties

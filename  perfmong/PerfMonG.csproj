@@ -108,6 +108,16 @@
                     BuildAction = "Compile"
                 />
                 <File
+                    RelPath = "DraggableBase.cs"
+                    SubType = "Form"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "DraggableBase.resx"
+                    DependentUpon = "DraggableBase.cs"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
                     RelPath = "PerfMonG.cs"
                     SubType = "Form"
                     BuildAction = "Compile"
