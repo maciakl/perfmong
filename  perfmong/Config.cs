@@ -34,11 +34,11 @@ namespace PerfMonG
 	
 	public class Config
 	{
-		private readonly int DEFAULT_X = 330;
-		private readonly int DEFAULT_Y = 680;
-		private readonly double DEFAULT_OPACITY = .8;
-		private readonly Color DEFAULT_BG = Color.White;
-		private readonly Color DEFAULT_TXT = SystemColors.ControlText;
+		public readonly int DEFAULT_X = 330;
+		public readonly int DEFAULT_Y = 680;
+		public readonly double DEFAULT_OPACITY = .8;
+		public readonly Color DEFAULT_BG = Color.White;
+		public readonly Color DEFAULT_TXT = SystemColors.ControlText;
 		
 		private readonly string FILE = "\\PerfMonG\\pm.cfg";
 		private string path;

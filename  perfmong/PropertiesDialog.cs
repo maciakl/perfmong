@@ -25,7 +25,7 @@ namespace PerfMonG
 		private System.Windows.Forms.Button TextColor;
 		private System.Windows.Forms.Button Defaults;
 		private System.Windows.Forms.Label OpacityText;
-		private System.Windows.Forms.Button SaveSettings;
+		//private System.Windows.Forms.Button SaveSettings;
 		private System.Windows.Forms.TrackBar OpacityBar;
 
         private ColorDialog colors;
@@ -105,7 +105,7 @@ namespace PerfMonG
 			this.TextColorLabel = new System.Windows.Forms.Label();
 			this.TextColor = new System.Windows.Forms.Button();
 			this.Defaults = new System.Windows.Forms.Button();
-			this.SaveSettings = new System.Windows.Forms.Button();
+			//this.SaveSettings = new System.Windows.Forms.Button();
 			this.OpacityBar = new System.Windows.Forms.TrackBar();
 			this.OpacityText = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.OpacityBar)).BeginInit();
@@ -153,7 +153,7 @@ namespace PerfMonG
 			// 
 			this.Accept.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.Accept.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.Accept.Location = new System.Drawing.Point(16, 88);
+			this.Accept.Location = new System.Drawing.Point(128, 88);
 			this.Accept.Name = "Accept";
 			this.Accept.Size = new System.Drawing.Size(64, 24);
 			this.Accept.TabIndex = 6;
@@ -163,7 +163,7 @@ namespace PerfMonG
 			// Cacel
 			// 
 			this.Cacel.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.Cacel.Location = new System.Drawing.Point(88, 88);
+			this.Cacel.Location = new System.Drawing.Point(200, 88);
 			this.Cacel.Name = "Cacel";
 			this.Cacel.Size = new System.Drawing.Size(64, 24);
 			this.Cacel.TabIndex = 7;
@@ -229,20 +229,16 @@ namespace PerfMonG
 			this.Defaults.Click += new System.EventHandler(this.Defaults_Click);
 			// 
 			// SaveSettings
-			// 
-			this.SaveSettings.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.SaveSettings.Location = new System.Drawing.Point(160, 88);
+			/*
+			this.SaveSettings.Location = new System.Drawing.Point(0, 0);
 			this.SaveSettings.Name = "SaveSettings";
-			this.SaveSettings.Size = new System.Drawing.Size(104, 24);
-			this.SaveSettings.TabIndex = 14;
-			this.SaveSettings.Text = "Save Settings";
-			this.SaveSettings.Click += new System.EventHandler(this.SaveSettings_Click);
-			// 
+			this.SaveSettings.TabIndex = 17;
+			*/ 
 			// OpacityBar
 			// 
 			this.OpacityBar.Location = new System.Drawing.Point(272, 32);
 			this.OpacityBar.Name = "OpacityBar";
-			this.OpacityBar.Size = new System.Drawing.Size(96, 45);
+			this.OpacityBar.Size = new System.Drawing.Size(96, 42);
 			this.OpacityBar.TabIndex = 15;
 			// 
 			// OpacityText
@@ -262,7 +258,7 @@ namespace PerfMonG
 			this.ControlBox = false;
 			this.Controls.Add(this.OpacityText);
 			this.Controls.Add(this.OpacityBar);
-			this.Controls.Add(this.SaveSettings);
+			//this.Controls.Add(this.SaveSettings);
 			this.Controls.Add(this.Defaults);
 			this.Controls.Add(this.TextColor);
 			this.Controls.Add(this.TextColorLabel);
@@ -319,11 +315,13 @@ namespace PerfMonG
 			x = X.Text;
 			y = Y.Text;
 			opc = (double) ((double)(OpacityBar.Value) / (double)10);
+			config.writeConfig(Int32.Parse(X.Text), Int32.Parse(Y.Text), (double) ((double)(OpacityBar.Value) / (double)10), BgColor.BackColor, TextColor.BackColor); 
 			setProperties();
 		}
 
 		private void Defaults_Click(object sender, System.EventArgs e)
 		{
+			config.setDefaults();
 			bg = config.BG;
 			txt = config.TXT;
 			opc = config.OPC;
@@ -333,11 +331,15 @@ namespace PerfMonG
 			setProperties();
 		}
 
-		private void SaveSettings_Click(object sender, System.EventArgs e)
-		{
-			if(MessageBox.Show(this, "Are you sure you want to save these values?\nYour configuration file will be overwritten!" ,"Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-				config.writeConfig(Int32.Parse(X.Text), Int32.Parse(Y.Text), (double) ((double)(OpacityBar.Value) / (double)10), BgColor.BackColor, TextColor.BackColor); 
-		}
+		/// <summary>
+		/// mcmcom : omitting the save settings event handler
+		/// </summary>
+
+//		private void SaveSettings_Click(object sender, System.EventArgs e)
+//		{
+//			if(MessageBox.Show(this, "Are you sure you want to save these values?\nYour configuration file will be overwritten!" ,"Warning!", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+//				config.writeConfig(Int32.Parse(X.Text), Int32.Parse(Y.Text), (double) ((double)(OpacityBar.Value) / (double)10), BgColor.BackColor, TextColor.BackColor); 
+//		}
 
 		// RETURN VALUES
 

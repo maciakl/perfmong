@@ -116,6 +116,7 @@ namespace PerfMonG
 			this.TopMost = false;
 			this.ShowInTaskbar = false;
 
+			//mike@teamsandbox.com : added the fore colors for the bottom row of items
 			this.BackColor = Color.Gray;
 			this.CPUText.BackColor = backgroundColor;
 			this.CPUText.ForeColor = textColor;
@@ -129,12 +130,17 @@ namespace PerfMonG
 			this.UptimeLabel.BackColor = backgroundColor;
 			this.UptimeLabel.ForeColor = textColor;
 			this.pageName.BackColor = backgroundColor;
+			this.pageName.ForeColor = textColor; 
 			this.page.BackColor = backgroundColor;
+			this.page.ForeColor = textColor; 
 			this.ProcsLabel.BackColor = backgroundColor;
+			this.ProcsLabel.ForeColor = textColor; 
 			this.procs.BackColor = backgroundColor;
+			this.procs.ForeColor = textColor; 
 			this.HDLabel.BackColor = backgroundColor;
+			this.HDLabel.ForeColor = textColor; 
 			this.hd.BackColor = backgroundColor;
-
+			this.hd.ForeColor = textColor; 
 			
 			this.Opacity = opacity;
 			this.TransparencyKey = Color.Gray;
@@ -341,7 +347,7 @@ namespace PerfMonG
 		{
 			if(MessageBox.Show(this, "Save settings?", "Exiting PerfMonG", MessageBoxButtons.YesNo,MessageBoxIcon.Question) == DialogResult.Yes)
 			{
-				resetLocation();
+				resetConfig();
 				configuration.writeConfig();
 			}
  
@@ -356,22 +362,24 @@ namespace PerfMonG
 
 		}
 
-		private void resetLocation()
+		private void resetConfig()
 		{
 			//mike@teamsandbox.com :
-			//lets drop props because we want to re-set the position of the form 
-			//and have it show up in the text box which depends (on creation) of the config file
+			//re-write all config to memory so the props panel shows it correctly. 
 			props.Dispose(); 
-			//change the config in memory
 			configuration.X = this.Location.X; 
 			configuration.Y = this.Location.Y;
+			configuration.OPC = this.opacity; 
+			configuration.BG = this.backgroundColor;
+			configuration.TXT = this.textColor; 
+ 
 			//re-create props
-			props = new PropertiesDialog(configuration); 
+			props = new PropertiesDialog(configuration);
 		}
 
 		private void PropertiesWindow(object sender, EventArgs e)
 		{
-			resetLocation();
+			resetConfig();
 	 
 			if(props.ShowDialog(this)== DialogResult.OK)
 			{
