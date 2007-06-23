@@ -28,8 +28,7 @@ namespace PerfMonG
 		private System.Windows.Forms.Label RAMText;
 		private System.Windows.Forms.Label HDLabel;
 		private System.Windows.Forms.Label hd;
-		
-	
+			
 		private System.ComponentModel.Container components = null;
 
 		private ContextMenu menu;
@@ -54,10 +53,42 @@ namespace PerfMonG
 		private Color backgroundColor;
 		private Color textColor;
 		
-		
-
 		private const string information = VERSION_MSG;
 
+
+		/// <summary>
+		/// Checks the Current size of the screen and positions the form if it was left off screen
+		/// (for dual monitor to single monitor issue # 5) 
+		/// mike mckinnon june 22 07
+		/// </summary>
+		private void CheckScreen()
+		{
+			int upperBound; 
+			int tmpX = this.Location.X;
+			int tmpY = this.Location.Y;
+
+			Screen [] screens = Screen.AllScreens; 
+			upperBound = screens.GetUpperBound(0);
+			
+			//they have only one screen
+			if(upperBound == 0)
+			{ 
+				//check that the X and Y pos of the form are not less than the reg points 
+				//of the screen or greater than the width and height of the screen 
+				if(tmpX < screens[0].WorkingArea.X || tmpX > screens[0].WorkingArea.Width)
+				{
+					tmpX = screens[0].WorkingArea.X; 
+				}
+				if(tmpY < screens[0].WorkingArea.Y || tmpY > screens[0].WorkingArea.Height)
+				{
+					tmpY = screens[0].WorkingArea.Y;
+				}
+				//set new location (will usually go to 0,0 if the form was misplaced before 
+				//otherwise put in its normal saved position 
+				this.Location = new Point(tmpX, tmpY);
+		 
+			}
+		}
         
 		public PerfMonG()
 		{
@@ -69,6 +100,8 @@ namespace PerfMonG
 			this.Text = "PerfMon (c) lgm";
 
 			Configure();
+			//mcm added 
+			CheckScreen(); 
 
 			menu = new ContextMenu();
 			about = new MenuItem("About");
