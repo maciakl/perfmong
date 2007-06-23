@@ -43,7 +43,7 @@ namespace PerfMonG
 
 		private Config configuration;
 
-		public const string VERSION = "0.2.3";
+		public const string VERSION = "0.2.5";
 		public const string VERSION_MSG = "PerfMon " + VERSION + " (c) 2004 Lukasz Grzegorz Maciak";
 
 		// EDITABLE SYSTEM VARIABLES:
@@ -52,6 +52,10 @@ namespace PerfMonG
 		private double opacity;
 		private Color backgroundColor;
 		private Color textColor;
+
+		private int cpuUpperTreshold;
+		private int cpuLowerTreshold;
+		private string date;
 		
 		private const string information = VERSION_MSG;
 
@@ -136,6 +140,10 @@ namespace PerfMonG
 			opacity = configuration.OPC;
 			backgroundColor = configuration.BG;
 			textColor = configuration.TXT;
+
+			cpuUpperTreshold = configuration.CPU_MAX;
+			cpuLowerTreshold = configuration.CPU_MIN;
+			date = configuration.DATE;
 		}
 		
 		private void Configure()
@@ -184,10 +192,10 @@ namespace PerfMonG
 			
 			float cp = pm.getCurrentCpuUsage();
 			
-			if( cp >= 70)
+			if( cp >= cpuUpperTreshold)
 				CPU.ForeColor = Color.Red;
 			else
-                if(cp <= 30)
+                if(cp <= cpuLowerTreshold)
 					CPU.ForeColor = Color.Blue;
 				else
 					CPU.ForeColor = SystemColors.ControlText;
@@ -404,7 +412,10 @@ namespace PerfMonG
 			configuration.Y = this.Location.Y;
 			configuration.OPC = this.opacity; 
 			configuration.BG = this.backgroundColor;
-			configuration.TXT = this.textColor; 
+			configuration.TXT = this.textColor;
+			configuration.CPU_MAX = this.cpuUpperTreshold;
+			configuration.CPU_MIN = this.cpuLowerTreshold;
+			configuration.DATE = this.date;
  
 			//re-create props
 			props = new PropertiesDialog(configuration);
@@ -421,6 +432,11 @@ namespace PerfMonG
 				opacity = props.OPC;
 				backgroundColor = props.Bg;
 				textColor = props.Txt;
+				cpuUpperTreshold = props.CPMX;
+				cpuLowerTreshold = props.CPMN;
+				date = props.DATE;
+
+
 				Configure();
 			}
 		}
