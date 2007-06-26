@@ -30,10 +30,16 @@ namespace PerfMonG
 
         private ColorDialog colors;
 
-		private string x, y;
+		private string x, y, cpuMax, cpuMin, date;
 		private double opc;
-		private int xp, yp;
+		private int xp, yp, cpMx, cpMn;
 		private Color bg, txt;
+		private System.Windows.Forms.TextBox CPU_MIN;
+		private System.Windows.Forms.TextBox CPU_MAX;
+		private System.Windows.Forms.Label cpu_MIN_lbl;
+		private System.Windows.Forms.Label cpu_MAX_lbl;
+		private System.Windows.Forms.Label lastSavedLbl;
+		private System.Windows.Forms.Label LastSaved;
 
 		private Config config;
 		
@@ -55,6 +61,9 @@ namespace PerfMonG
 			this.opc = config.OPC;
 			this.bg = config.BG;
 			this.txt = config.TXT;
+			this.cpuMax = config.CPU_MAX.ToString();
+			this.cpuMin = config.CPU_MIN.ToString();
+			this.date = config.DATE;
 
 			setProperties();
 
@@ -64,11 +73,16 @@ namespace PerfMonG
 		{
 			X.Text = this.x;
 			Y.Text = this.y;
+			CPU_MAX.Text = this.cpuMax;
+			CPU_MIN.Text = this.cpuMin;
 			OpacityBar.Value = (int) (this.opc * 10);
 			BgColor.BackColor = this.bg;
 			TextColor.BackColor = this.txt;
+			LastSaved.Text = this.date;
 			xp = Int32.Parse(x);
 			yp = Int32.Parse(y);
+			cpMx = Int32.Parse(cpuMax);
+			cpMn = Int32.Parse(cpuMin);
 		}
 
 		/// <summary>
@@ -105,9 +119,14 @@ namespace PerfMonG
 			this.TextColorLabel = new System.Windows.Forms.Label();
 			this.TextColor = new System.Windows.Forms.Button();
 			this.Defaults = new System.Windows.Forms.Button();
-			//this.SaveSettings = new System.Windows.Forms.Button();
 			this.OpacityBar = new System.Windows.Forms.TrackBar();
 			this.OpacityText = new System.Windows.Forms.Label();
+			this.CPU_MIN = new System.Windows.Forms.TextBox();
+			this.CPU_MAX = new System.Windows.Forms.TextBox();
+			this.cpu_MIN_lbl = new System.Windows.Forms.Label();
+			this.cpu_MAX_lbl = new System.Windows.Forms.Label();
+			this.lastSavedLbl = new System.Windows.Forms.Label();
+			this.LastSaved = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.OpacityBar)).BeginInit();
 			this.SuspendLayout();
 			// 
@@ -153,7 +172,7 @@ namespace PerfMonG
 			// 
 			this.Accept.DialogResult = System.Windows.Forms.DialogResult.OK;
 			this.Accept.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.Accept.Location = new System.Drawing.Point(128, 88);
+			this.Accept.Location = new System.Drawing.Point(208, 88);
 			this.Accept.Name = "Accept";
 			this.Accept.Size = new System.Drawing.Size(64, 24);
 			this.Accept.TabIndex = 6;
@@ -163,7 +182,7 @@ namespace PerfMonG
 			// Cacel
 			// 
 			this.Cacel.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.Cacel.Location = new System.Drawing.Point(200, 88);
+			this.Cacel.Location = new System.Drawing.Point(280, 88);
 			this.Cacel.Name = "Cacel";
 			this.Cacel.Size = new System.Drawing.Size(64, 24);
 			this.Cacel.TabIndex = 7;
@@ -173,7 +192,7 @@ namespace PerfMonG
 			// TopBar
 			// 
 			this.TopBar.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.TopBar.Location = new System.Drawing.Point(24, 0);
+			this.TopBar.Location = new System.Drawing.Point(120, 0);
 			this.TopBar.Name = "TopBar";
 			this.TopBar.Size = new System.Drawing.Size(232, 24);
 			this.TopBar.TabIndex = 8;
@@ -192,22 +211,22 @@ namespace PerfMonG
 			// BgColorLabel
 			// 
 			this.BgColorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.BgColorLabel.Location = new System.Drawing.Point(16, 24);
+			this.BgColorLabel.Location = new System.Drawing.Point(32, 24);
 			this.BgColorLabel.Name = "BgColorLabel";
-			this.BgColorLabel.Size = new System.Drawing.Size(104, 24);
+			this.BgColorLabel.Size = new System.Drawing.Size(80, 24);
 			this.BgColorLabel.TabIndex = 10;
 			this.BgColorLabel.Text = "Background Color:";
-			this.BgColorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.BgColorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// TextColorLabel
 			// 
 			this.TextColorLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.TextColorLabel.Location = new System.Drawing.Point(16, 56);
+			this.TextColorLabel.Location = new System.Drawing.Point(32, 56);
 			this.TextColorLabel.Name = "TextColorLabel";
-			this.TextColorLabel.Size = new System.Drawing.Size(104, 24);
+			this.TextColorLabel.Size = new System.Drawing.Size(56, 24);
 			this.TextColorLabel.TabIndex = 11;
 			this.TextColorLabel.Text = "Text Color:";
-			this.TextColorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.TextColorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
 			// TextColor
 			// 
@@ -221,22 +240,16 @@ namespace PerfMonG
 			// Defaults
 			// 
 			this.Defaults.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.Defaults.Location = new System.Drawing.Point(272, 88);
+			this.Defaults.Location = new System.Drawing.Point(352, 88);
 			this.Defaults.Name = "Defaults";
 			this.Defaults.Size = new System.Drawing.Size(112, 24);
 			this.Defaults.TabIndex = 13;
 			this.Defaults.Text = "Reset Settings";
 			this.Defaults.Click += new System.EventHandler(this.Defaults_Click);
 			// 
-			// SaveSettings
-			/*
-			this.SaveSettings.Location = new System.Drawing.Point(0, 0);
-			this.SaveSettings.Name = "SaveSettings";
-			this.SaveSettings.TabIndex = 17;
-			*/ 
 			// OpacityBar
 			// 
-			this.OpacityBar.Location = new System.Drawing.Point(272, 32);
+			this.OpacityBar.Location = new System.Drawing.Point(376, 40);
 			this.OpacityBar.Name = "OpacityBar";
 			this.OpacityBar.Size = new System.Drawing.Size(96, 42);
 			this.OpacityBar.TabIndex = 15;
@@ -244,21 +257,86 @@ namespace PerfMonG
 			// OpacityText
 			// 
 			this.OpacityText.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
-			this.OpacityText.Location = new System.Drawing.Point(272, 16);
+			this.OpacityText.Location = new System.Drawing.Point(376, 24);
 			this.OpacityText.Name = "OpacityText";
 			this.OpacityText.Size = new System.Drawing.Size(88, 16);
 			this.OpacityText.TabIndex = 16;
 			this.OpacityText.Text = "Opacity";
 			this.OpacityText.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
+			// CPU_MIN
+			// 
+			this.CPU_MIN.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.CPU_MIN.Location = new System.Drawing.Point(336, 56);
+			this.CPU_MIN.Name = "CPU_MIN";
+			this.CPU_MIN.Size = new System.Drawing.Size(32, 18);
+			this.CPU_MIN.TabIndex = 20;
+			this.CPU_MIN.Text = "";
+			// 
+			// CPU_MAX
+			// 
+			this.CPU_MAX.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.CPU_MAX.Location = new System.Drawing.Point(336, 24);
+			this.CPU_MAX.Name = "CPU_MAX";
+			this.CPU_MAX.Size = new System.Drawing.Size(32, 18);
+			this.CPU_MAX.TabIndex = 19;
+			this.CPU_MAX.Text = "";
+			// 
+			// cpu_MIN_lbl
+			// 
+			this.cpu_MIN_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.cpu_MIN_lbl.ForeColor = System.Drawing.Color.Blue;
+			this.cpu_MIN_lbl.Location = new System.Drawing.Point(256, 56);
+			this.cpu_MIN_lbl.Name = "cpu_MIN_lbl";
+			this.cpu_MIN_lbl.Size = new System.Drawing.Size(72, 16);
+			this.cpu_MIN_lbl.TabIndex = 18;
+			this.cpu_MIN_lbl.Text = "CPU blue below:";
+			this.cpu_MIN_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// cpu_MAX_lbl
+			// 
+			this.cpu_MAX_lbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.cpu_MAX_lbl.ForeColor = System.Drawing.Color.Red;
+			this.cpu_MAX_lbl.Location = new System.Drawing.Point(256, 24);
+			this.cpu_MAX_lbl.Name = "cpu_MAX_lbl";
+			this.cpu_MAX_lbl.Size = new System.Drawing.Size(88, 16);
+			this.cpu_MAX_lbl.TabIndex = 17;
+			this.cpu_MAX_lbl.Text = "CPU red above:";
+			this.cpu_MAX_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// lastSavedLbl
+			// 
+			this.lastSavedLbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.lastSavedLbl.Location = new System.Drawing.Point(32, 88);
+			this.lastSavedLbl.Name = "lastSavedLbl";
+			this.lastSavedLbl.Size = new System.Drawing.Size(72, 24);
+			this.lastSavedLbl.TabIndex = 21;
+			this.lastSavedLbl.Text = "Last saved on:";
+			this.lastSavedLbl.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// LastSaved
+			// 
+			this.LastSaved.Font = new System.Drawing.Font("Microsoft Sans Serif", 6.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((System.Byte)(0)));
+			this.LastSaved.Location = new System.Drawing.Point(104, 88);
+			this.LastSaved.Name = "LastSaved";
+			this.LastSaved.Size = new System.Drawing.Size(104, 24);
+			this.LastSaved.TabIndex = 22;
+			this.LastSaved.Text = "[date]";
+			this.LastSaved.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			// 
 			// PropertiesDialog
 			// 
 			this.AutoScaleBaseSize = new System.Drawing.Size(5, 13);
-			this.ClientSize = new System.Drawing.Size(392, 118);
+			this.ClientSize = new System.Drawing.Size(480, 125);
 			this.ControlBox = false;
+			this.Controls.Add(this.LastSaved);
+			this.Controls.Add(this.lastSavedLbl);
+			this.Controls.Add(this.CPU_MIN);
+			this.Controls.Add(this.CPU_MAX);
+			this.Controls.Add(this.cpu_MIN_lbl);
+			this.Controls.Add(this.cpu_MAX_lbl);
 			this.Controls.Add(this.OpacityText);
 			this.Controls.Add(this.OpacityBar);
-			//this.Controls.Add(this.SaveSettings);
 			this.Controls.Add(this.Defaults);
 			this.Controls.Add(this.TextColor);
 			this.Controls.Add(this.TextColorLabel);
@@ -314,8 +392,11 @@ namespace PerfMonG
 		{
 			x = X.Text;
 			y = Y.Text;
+			cpuMax = this.CPU_MAX.Text;
+			cpuMin = this.CPU_MIN.Text;
+			date = DateTime.Now.ToString();
 			opc = (double) ((double)(OpacityBar.Value) / (double)10);
-			config.writeConfig(Int32.Parse(X.Text), Int32.Parse(Y.Text), (double) ((double)(OpacityBar.Value) / (double)10), BgColor.BackColor, TextColor.BackColor); 
+			config.writeConfig(Int32.Parse(X.Text), Int32.Parse(Y.Text), (double) ((double)(OpacityBar.Value) / (double)10), BgColor.BackColor, TextColor.BackColor, Int32.Parse(cpuMax), Int32.Parse(cpuMin), date); 
 			setProperties();
 		}
 
@@ -327,6 +408,8 @@ namespace PerfMonG
 			opc = config.OPC;
 			x = config.X.ToString();
 			y = config.Y.ToString();
+			cpuMax = config.CPU_MAX.ToString();
+			cpuMin = config.CPU_MIN.ToString();
 			
 			setProperties();
 		}
@@ -348,6 +431,9 @@ namespace PerfMonG
 		public int Xp {	get { return xp; }	}
 		public int Yp {	get {return yp; } }
 		public double OPC { get { return opc; } }
+		public int CPMX {	get {return cpMx; } }
+		public int CPMN {	get {return cpMn; } }
+		public string DATE {	get {return date; } }
 	
 
 			

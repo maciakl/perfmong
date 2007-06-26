@@ -39,6 +39,8 @@ namespace PerfMonG
 		public readonly double DEFAULT_OPACITY = .8;
 		public readonly Color DEFAULT_BG = Color.White;
 		public readonly Color DEFAULT_TXT = SystemColors.ControlText;
+		public readonly int DEFAULT_CPU_MAX = 70;
+		public readonly int DEFAULT_CPU_MIN = 30;
 		
 		private readonly string FILE = "\\PerfMonG\\pm.cfg";
 		private string path;
@@ -48,6 +50,11 @@ namespace PerfMonG
 		private double opc;
 		private Color bg;
 		private Color txt;
+
+		private int cpuMax;
+		private int cpuMin;
+
+		private string date;
 
 		public Config()
 		{
@@ -70,7 +77,7 @@ namespace PerfMonG
 			{
 				setDefaults();
 				Directory.CreateDirectory(path + "\\PerfMonG");
-				writeConfig(X, Y, OPC, BG, TXT);
+				writeConfig(X, Y, OPC, BG, TXT, CPU_MAX, CPU_MIN, DATE);
 				
 			}
 			else
@@ -143,6 +150,18 @@ namespace PerfMonG
 							OPC = Double.Parse(arguments[1]);
 							count++;
 							break;
+						case "cpuMax":
+							CPU_MAX = Int32.Parse(arguments[1]);
+							count++;
+							break;
+						case "cpuMin":
+							CPU_MIN = Int32.Parse(arguments[1]);
+							count++;
+							break;
+						case "date":
+							DATE = arguments[1] + " " + arguments[2] + " " + arguments[3];
+							count++;
+							break;
 						default:
 							throw new Exception("Config file misconfigured at line " + (ln+1));
 					}
@@ -167,9 +186,12 @@ namespace PerfMonG
 			OPC = DEFAULT_OPACITY;
 			BG = DEFAULT_BG;
 			TXT = DEFAULT_TXT;
+			CPU_MAX = DEFAULT_CPU_MAX;
+			CPU_MIN = DEFAULT_CPU_MIN;
+			DATE = DateTime.Now.ToString();
 		}
 
-		public void writeConfig(int x, int y, double op, Color bg, Color txt)
+		public void writeConfig(int x, int y, double op, Color bg, Color txt, int cpuMax, int cpuMin, string date)
 		{
             StreamWriter wr;
 
@@ -182,6 +204,9 @@ namespace PerfMonG
 			wr.WriteLine("opc=" + op);
 			wr.WriteLine("bg=" + bg.Name);
 			wr.WriteLine("txt=" + txt.Name);
+			wr.WriteLine("cpuMax=" + cpuMax);
+			wr.WriteLine("cpuMin=" + cpuMin);
+			wr.WriteLine("date=" + date);
 
 			wr.Close();
 
@@ -189,7 +214,7 @@ namespace PerfMonG
 
 		public void writeConfig()
 		{
-			writeConfig(x, y, opc, bg, txt); 
+			writeConfig(x, y, opc, bg, txt, cpuMax, cpuMin, date); 
 		}
 
 		// properties
@@ -198,5 +223,8 @@ namespace PerfMonG
 		public double OPC { get { return opc; } set { opc = value;} }
 		public Color BG { get { return bg; } set { bg = value; } }
 		public Color TXT { get { return txt; } set {txt = value; } }
+		public int CPU_MAX { get { return cpuMax; } set {cpuMax = value; } }
+		public int CPU_MIN { get { return cpuMin; } set {cpuMin = value; } }
+		public string DATE { get { return date; } set {date = value; } }
 	}
 }
