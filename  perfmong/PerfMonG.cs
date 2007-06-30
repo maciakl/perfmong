@@ -43,7 +43,7 @@ namespace PerfMonG
 
 		private Config configuration;
 
-		public const string VERSION = "0.2.5";
+		public const string VERSION = "0.2.6-rc";
 		public const string VERSION_MSG = "PerfMon " + VERSION + " (c) 2004 Lukasz Grzegorz Maciak";
 
 		// EDITABLE SYSTEM VARIABLES:
