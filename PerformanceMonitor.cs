@@ -76,6 +76,13 @@ using System.Diagnostics;
 
 		public string getDisk()
 		{
-			return (disk.NextValue() / 1024).ToString("F2") + " GB";
+			try
+			{
+				return (disk.NextValue() / 1024).ToString("F2") + " GB";
+			}
+			catch (InvalidOperationException)
+			{
+				return "N/A";
+			}
 		}
 	}
