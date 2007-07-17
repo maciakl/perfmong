@@ -42,7 +42,7 @@ namespace PerfMonG
 
 		private Config configuration;
 
-		public const string VERSION = "0.2.6-rc";
+		public const string VERSION = "0.2.7";
 		public const string VERSION_MSG = "PerfMon " + VERSION + " (c) 2004 Lukasz Grzegorz Maciak";
 
 		// EDITABLE SYSTEM VARIABLES:
@@ -153,35 +153,19 @@ namespace PerfMonG
 			this.TopMost = false;
 			this.ShowInTaskbar = false;
 
-			//mike@teamsandbox.com : added the fore colors for the bottom row of items
-			this.BackColor = Color.Gray;
-			this.CPUTotalText.BackColor = backgroundColor;
-			this.CPUTotalText.ForeColor = textColor;
-			this.CPUTotal.BackColor = backgroundColor;
-			this.RAMText.BackColor = backgroundColor;
-			this.RAMText.ForeColor = textColor;
-			this.RAM.BackColor = backgroundColor;
-			this.RAM.ForeColor = textColor;
-			this.uptime.BackColor = backgroundColor;
-			this.uptime.ForeColor = textColor;
-			this.UptimeLabel.BackColor = backgroundColor;
-			this.UptimeLabel.ForeColor = textColor;
-			this.pageName.BackColor = backgroundColor;
-			this.pageName.ForeColor = textColor; 
-			this.page.BackColor = backgroundColor;
-			this.page.ForeColor = textColor; 
-			this.ProcsLabel.BackColor = backgroundColor;
-			this.ProcsLabel.ForeColor = textColor; 
-			this.procs.BackColor = backgroundColor;
-			this.procs.ForeColor = textColor; 
-			this.HDLabel.BackColor = backgroundColor;
-			this.HDLabel.ForeColor = textColor; 
-			this.hd.BackColor = backgroundColor;
-			this.hd.ForeColor = textColor; 
-			
+			//mike@teamsandbox.com : more elegant way to handle changing the colors				
+			foreach(Control c in this.Controls)
+			{
+				if(c.GetType().ToString() == "System.Windows.Forms.Label")
+				{
+					Label lblTmp = (Label)c; 
+					lblTmp.BackColor = backgroundColor; 
+					lblTmp.ForeColor = textColor; 
+				}
+			}
+			this.BackColor = Color.Gray;		
 			this.Opacity = opacity;
 			this.TransparencyKey = Color.Gray;
-
 		}
 
 		private void TimeTrigger(Object sender, EventArgs args)
