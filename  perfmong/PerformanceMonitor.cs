@@ -2,25 +2,43 @@
 
 using System;
 using System.Diagnostics;
+using System.Management; 
+
 
 	public class PerformanceMonitor
 	{
-		protected PerformanceCounter cpuCounter;
+
+		protected PerformanceCounter[] cpuCounters; 
+		protected PerformanceCounter cpuTotalCounter; 
 		protected PerformanceCounter ramCounter;
 		protected PerformanceCounter uptime;
 		protected PerformanceCounter pagefile;
 		protected PerformanceCounter processes;
 		protected PerformanceCounter disk;
-		
+
 		public PerformanceMonitor()
 		{
-			cpuCounter = new PerformanceCounter();
+			int processorCount = this.getCpuProcessors(); 
 
-			cpuCounter.CategoryName = "Processor";
-			cpuCounter.CounterName = "% Processor Time";
-			cpuCounter.InstanceName = "_Total";
+			if(processorCount > 1)
+			{
+				cpuCounters = new PerformanceCounter[processorCount];
+				for(int i = 0; i<processorCount;++i)
+				{
+					PerformanceCounter p = new PerformanceCounter(); 
+					p.CategoryName = "Processor";
+					p.CounterName = "% Processor Time"; 
+					p.InstanceName = i.ToString();
+					cpuCounters[i] = p; 
+				}
+			}
+			
+			cpuTotalCounter = new PerformanceCounter();
+			cpuTotalCounter.CategoryName = "Processor";
+			cpuTotalCounter.CounterName = "% Processor Time"; 
+			cpuTotalCounter.InstanceName = "_Total"; 
 
-			ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+            ramCounter = new PerformanceCounter("Memory", "Available MBytes");
 
 			uptime = new PerformanceCounter("System", "System Up Time");
 
@@ -40,12 +58,20 @@ using System.Diagnostics;
 			
 		}
 
-		
-		public float getCurrentCpuUsage()
+		public int getCpuProcessors()
 		{
-			return cpuCounter.NextValue();
+			return int.Parse(Environment.GetEnvironmentVariable("NUMBER_OF_PROCESSORS").ToString()); 
+		}
+		public float getCurrentCpuUsage(int index)
+		{
+			return cpuCounters[index].NextValue();	 
 		}
 
+		public float getTotalCpuUsage()
+		{
+			return cpuTotalCounter.NextValue();
+		}
+	
 		public string getAvailableRAM()
 		{
 			return ramCounter.NextValue()+"MB";
@@ -86,3 +112,5 @@ using System.Diagnostics;
 			}
 		}
 	}
+
+
