@@ -117,8 +117,8 @@ namespace PerfMonG
 					createCpuTextLabel(i); 
 					createCpuDataLabel(i);
 				}
-				this.CPUTotalText.MouseHover += new System.EventHandler(this.CPU0_MouseHover);
-				this.CPUTotalText.MouseLeave += new System.EventHandler(this.CPU0_MouseLeave);
+				this.CPUTotalText.MouseHover += new System.EventHandler(this.CPUTotal_MouseHover);
+				this.CPUTotalText.MouseLeave += new System.EventHandler(this.CPUTotal_MouseLeave);
 			}
 			tm = new Timer();
 
@@ -299,7 +299,7 @@ namespace PerfMonG
 		}
 
 
-		//mcm - mouse hover and leave events 
+		//mcm - methods to create labels for data and text 
 		private void createCpuTextLabel(int i)
 		{
 			Label lbl = new Label(); 
@@ -365,7 +365,8 @@ namespace PerfMonG
 			this.Controls.Add(lbl);
 		}
 
-		protected void CPU0_MouseHover(object sender, System.EventArgs e)
+		//mcm - mouse hover and leave events 
+		protected void CPUTotal_MouseHover(object sender, System.EventArgs e)
 		{
 			foreach(Control c in this.Controls)
 			{
@@ -380,7 +381,7 @@ namespace PerfMonG
 			}
 		}
 
-		protected void CPU0_MouseLeave(object sender, System.EventArgs e)
+		protected void CPUTotal_MouseLeave(object sender, System.EventArgs e)
 		{
 			foreach(Control c in this.Controls)
 			{
